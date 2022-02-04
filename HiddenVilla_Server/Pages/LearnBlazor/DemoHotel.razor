@@ -1,0 +1,67 @@
+﻿@page "/demohotel"
+@using Model
+@using HiddenVilla_Server.Pages.LearnBlazor.LearnBlazorComponents
+<h3>We will display hotel rooms and amenities here!</h3>
+
+<div class="row container border p-2 m-2" style="background-color:cornflowerblue">
+    @foreach(var room in Rooms)
+            {
+                <div class="container border col-3" style="background-color:darkgray">
+                    <h5>Room - @room.Id</h5>
+                    <br/>
+                    <br/>
+                    @room.RoomName
+                    <br/>
+                    $ @room.Price
+                    <br/>
+                    <input type="checkbox" @bind-value="room.IsActive" @bind-value:event="oninput"/> Is Active
+                    <br/>
+                    This room is @(room.IsActive? "Active" : "Inactive")
+                    <br/>
+                    @if(room.IsActive)
+                    {
+                        foreach(var item in room.RoomProps)
+                        {
+                            <span>@item.Name - @item.Value</span>
+                            <br/>
+                        }
+                    }
+                    
+                <EditDeleteButton IsAdmin="false"></EditDeleteButton>
+
+                </div>
+            }
+</div>
+@code {
+    List<Model.BlazorRoom> Rooms = new List<Model.BlazorRoom>();
+
+    protected override void OnInitialized()
+    {
+        Model.BlazorRoom Room = new Model.BlazorRoom()
+        {
+            Id = 1,
+            RoomName = "Villa Suite One Bedroom",
+            IsActive = false,
+            Price = 499,
+            RoomProps = new List<Model.BlazorRoomProp>
+{
+            new Model.BlazorRoomProp{Id=1,Name="Sq Ft",Value="100"},
+            new Model.BlazorRoomProp{Id=2,Name="Occupancy",Value="3"}
+        }
+        };
+        Rooms.Add(Room);
+        Room = new Model.BlazorRoom()
+        {
+            Id = 2,
+            RoomName = "Villa Suite Two Bedrooms",
+            IsActive = false,
+            Price = 899,
+            RoomProps = new List<Model.BlazorRoomProp>
+{
+            new Model.BlazorRoomProp{Id=1,Name="Sq Ft",Value="150"},
+            new Model.BlazorRoomProp{Id=2,Name="Occupancy",Value="6"}
+        }
+        };
+        Rooms.Add(Room);
+    }
+}
